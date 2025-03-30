@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events Gallery | College Events</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="events.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">College<span>Events</span></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="events.html" class="active">Events</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="admin.html" class="admin-btn">Admin</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="events-main">
+        <section class="events-header">
+            <h1>Our Events Gallery</h1>
+            <p>Browse through our collection of past and upcoming events</p>
+            <div class="search-filter">
+                <div class="search-box">
+                    <input type="text" placeholder="Search events..." id="searchInput">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                <div class="filter-dropdown">
+                    <select id="categoryFilter">
+                        <option value="all">All Categories</option>
+                        <option value="technical">Technical</option>
+                        <option value="cultural">Cultural</option>
+                        <option value="sports">Sports</option>
+                        <option value="workshops">Workshops</option>
+                        <option value="seminars">Seminars</option>
+                        <option value="others">Others</option>
+                    </select>
+                </div>
+                <div class="sort-dropdown">
+                    <select id="sortBy">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="popular">Most Popular</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <section class="events-container">
+            <div class="events-grid" id="eventsGrid">
+                <!-- Events will be loaded dynamically from events.js -->
+            </div>
+            <div class="load-more">
+                <button id="loadMoreBtn">Load More Events</button>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact">
+        <!-- Same footer as index.html -->
+    </footer>
+
+    <!-- Event Modal -->
+    <div class="modal" id="eventModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body" id="modalBody">
+                <!-- Content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script src="events.js"></script>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | College Events</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="admin-container" id="loginContainer">
+        <div class="admin-login">
+            <h2>Admin Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn">Login</button>
+                <div id="loginError" class="error-message"></div>
+            </form>
+        </div>
+    </div>
+
+    <div class="admin-dashboard" id="dashboardContainer" style="display: none;">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3>College Events</h3>
+                <p>Admin Dashboard</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="active" data-tab="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</li>
+                <li data-tab="add-event"><i class="fas fa-calendar-plus"></i> Add Event</li>
+                <li data-tab="manage-events"><i class="fas fa-calendar-alt"></i> Manage Events</li>
+                <li data-tab="media"><i class="fas fa-images"></i> Media Library</li>
+                <li data-tab="settings"><i class="fas fa-cog"></i> Settings</li>
+            </ul>
+            <div class="sidebar-footer">
+                <button id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </aside>
+
+        <main class="admin-content">
+            <header class="admin-header">
+                <h2 id="adminPageTitle">Dashboard</h2>
+                <div class="admin-user">
+                    <span id="adminUsername">Admin</span>
+                    <div class="user-avatar">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                </div>
+            </header>
+
+            <div class="tab-content active" id="dashboardTab">
+                <div class="stats-cards">
+                    <div class="stat-card">
+                        <h3>Total Events</h3>
+                        <p id="totalEvents">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>This Month</h3>
+                        <p id="monthEvents">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Upcoming</h3>
+                        <p id="upcomingEvents">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Media Files</h3>
+                        <p id="mediaFiles">0</p>
+                    </div>
+                </div>
+                <div class="recent-events">
+                    <h3>Recent Events</h3>
+                    <div class="events-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Event Name</th>
+                                    <th>Date</th>
+                                    <th>Category</th>
+                                    <th>Views</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentEventsTable">
+                                <!-- Will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="addEventTab">
+                <form id="addEventForm" enctype="multipart/form-data">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="eventName">Event Name</label>
+                            <input type="text" id="eventName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventDate">Event Date</label>
+                            <input type="date" id="eventDate" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="eventCategory">Category</label>
+                            <select id="eventCategory" required>
+                                <option value="">Select Category</option>
+                                <option value="technical">Technical</option>
+                                <option value="cultural">Cultural</option>
+                                <option value="sports">Sports</option>
+                                <option value="workshops">Workshops</option>
+                                <option value="seminars">Seminars</option>
+                                <option value="others">Others</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventLocation">Location</label>
+                            <input type="text" id="eventLocation" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventDescription">Description</label>
+                        <textarea id="eventDescription" rows="5" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventImages">Upload Images</label>
+                        <input type="file" id="eventImages" multiple accept="image/*">
+                        <div class="image-preview" id="imagePreview"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventVideos">Upload Videos</label>
+                        <input type="file" id="eventVideos" multiple accept="video/*">
+                        <div class="video-preview" id="videoPreview"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="featuredEvent">Featured Event</label>
+                        <input type="checkbox" id="featuredEvent">
+                    </div>
+                    <button type="submit" class="btn">Add Event</button>
+                    <div id="eventFormError" class="error-message"></div>
+                    <div id="eventFormSuccess" class="success-message"></div>
+                </form>
+            </div>
+
+            <div class="tab-content" id="manageEventsTab">
+                <div class="search-filter">
+                    <div class="search-box">
+                        <input type="text" placeholder="Search events..." id="adminSearchInput">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="filter-dropdown">
+                        <select id="adminCategoryFilter">
+                            <option value="all">All Categories</option>
+                            <option value="technical">Technical</option>
+                            <option value="cultural">Cultural</option>
+                            <option value="sports">Sports</option>
+                            <option value="workshops">Workshops</option>
+                            <option value="seminars">Seminars</option>
+                            <option value="others">Others</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="events-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Event Name</th>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Featured</th>
+                                <th>Views</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminEventsTable">
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination" id="adminPagination">
+                    <!-- Pagination will be added here -->
+                </div>
+            </div>
+
+            <div class="tab-content" id="mediaTab">
+                <div class="media-upload">
+                    <h3>Upload Media</h3>
+                    <form id="mediaUploadForm">
+                        <div class="form-group">
+                            <label for="mediaFiles">Select Files</label>
+                            <input type="file" id="mediaFiles" multiple accept="image/*,video/*">
+                        </div>
+                        <button type="submit" class="btn">Upload</button>
+                    </form>
+                </div>
+                <div class="media-library">
+                    <h3>Media Library</h3>
+                    <div class="media-filter">
+                        <div class="filter-buttons">
+                            <button class="active" data-type="all">All</button>
+                            <button data-type="image">Images</button>
+                            <button data-type="video">Videos</button>
+                        </div>
+                        <div class="search-box">
+                            <input type="text" placeholder="Search media..." id="mediaSearchInput">
+                            <button><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="media-grid" id="mediaGrid">
+                        <!-- Media items will be loaded here -->
+                    </div>
+                    <div class="pagination" id="mediaPagination">
+                        <!-- Pagination will be added here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="settingsTab">
+                <form id="adminSettingsForm">
+                    <h3>Admin Account</h3>
+                    <div class="form-group">
+                        <label for="adminUsername">Username</label>
+                        <input type="text" id="adminUsername" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="adminEmail">Email</label>
+                        <input type="email" id="adminEmail">
+                    </div>
+                    
+                    <h3>Change Password</h3>
+                    <div class="form-group">
+                        <label for="currentPassword">Current Password</label>
+                        <input type="password" id="currentPassword">
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" id="newPassword">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword">
+                    </div>
+                    
+                    <h3>Website Settings</h3>
+                    <div class="form-group">
+                        <label for="siteTitle">Site Title</label>
+                        <input type="text" id="siteTitle">
+                    </div>
+                    <div class="form-group">
+                        <label for="itemsPerPage">Items Per Page</label>
+                        <input type="number" id="itemsPerPage" min="5" max="50">
+                    </div>
+                    
+                    <button type="submit" class="btn">Save Settings</button>
+                    <div id="settingsMessage" class="message"></div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- Edit Event Modal -->
+    <div class="modal" id="editEventModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body" id="editEventBody">
+                <!-- Content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script src="auth.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
